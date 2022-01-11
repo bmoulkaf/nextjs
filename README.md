@@ -138,9 +138,12 @@ Par la suite pour l'insérer au sein de notre page on pourra l'invoquer comme ce
 
 ### Récupérer les données
 
-On va maintenant récuperer les données des films dont nous avons besoin pour peupler notre page. Pour cela, nous allons consommer l'API que nous avons précédemment définie dans le fichier `.env`. Pour mieux comprendre l'API, vous pouvez consulter sa documentation: https://developers.themoviedb.org/3/movies/get-upcoming.
+On va maintenant récupérer les données des films dont nous avons besoin pour peupler notre page. Pour cela, nous allons consommer l'API que nous avons précédemment définie dans le fichier `.env`. Pour mieux comprendre l'API, vous pouvez consulter sa documentation: https://developers.themoviedb.org/3/movies/get-upcoming.
 
 On récupère les données dans une fonction appellée `getStaticProps`, qu'il faut ajouter à `index.js` et ne pas oublier d'exporter. Une fois les données obtenues, on les retourne dans un object contenu dans un champ `props`, qui sera passé au composant Home.
+
+**Tip:** 
+Pour insérer les valeurs des variables d'environnement dans vos requêtes, vous pouvez utiliser `${process.env.NOM_VARABLE}`.
 
 <details>
   <summary>Solution</summary>
