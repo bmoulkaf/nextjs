@@ -4,8 +4,8 @@
 Dans ce TP, vous allez développer à partir de zéro une petite application qui vous permettra de d'afficher un catalogue de films et de consulter les informations disponibles à leur sujet. L'application récupèrera les données nécessaires via l'API de [The Movie Database](https://www.themoviedb.org/?language=fr).
 
 Quelques ressources utiles :
-- La démo présentée dans le cours : https://nextjs-demo-cic3kqsyz-brahim-lqati.vercel.app/
-- La présentation de la démo : https://presentation-nextjs-q6w9rrc8k-brahim-lqati.vercel.app/
+- L'application de la demo : https://nextjs-demo-96t0oc27b-brahim-lqati.vercel.app/
+- La présentation de la démo : https://presentation-nextjs-qckhc8jxx-brahim-lqati.vercel.app/
 
 ## Prérequis
 
