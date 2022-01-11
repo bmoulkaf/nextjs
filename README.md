@@ -55,7 +55,7 @@ export default function Home() {
 			Premier div
 			<div>
 				Deuxième div
-    		</div>
+			</div>
 		</div>
 	)
 }
