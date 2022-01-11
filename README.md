@@ -50,14 +50,14 @@ Ainsi cette structure de composant est valide :
 
 ```html
 export default function Home() {
-  return (
-    <div>
-		Premier div
+	return (
 		<div>
-			Deuxième div
-    	</div>
-    </div>
-  )
+			Premier div
+			<div>
+				Deuxième div
+    		</div>
+		</div>
+	)
 }
 ```
 
@@ -65,15 +65,15 @@ Mais pas celle-là :
 
 ```html
 export default function Home() {
-  return (
-    <div>
-		Premier div
-    </div>
+	return (
+		<div>
+			Premier div
+		</div>
 
-	<div>
-		Deuxième div
-    </div>
-  )
+		<div>
+			Deuxième div
+		</div>
+	)
 }
 ```
 
