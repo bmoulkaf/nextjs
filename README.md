@@ -1,13 +1,11 @@
 # TP NextJS - DSFFS
 
 ## Introduction
-Vous venez d'avoir une présentation sur Next.js, ainsi qu'un apperçu de son fonctionnement et de ses possibilités. Il est temps de mettre cela en pratique.
-
-Dans ce TP, vous allez développer à partir de zéro une petite application qui vous permettra de d'afficher un catalogue de films et leurs informations associées. L'application récupèrera les données nécessaires via l'API de [The Movie Database](https://www.themoviedb.org/?language=fr).
+Dans ce TP, vous allez développer à partir de zéro une petite application qui vous permettra de d'afficher un catalogue de films et de consulter les informations disponibles à leur sujet. L'application récupèrera les données nécessaires via l'API de [The Movie Database](https://www.themoviedb.org/?language=fr).
 
 Quelques ressources utiles :
 - La démo présentée dans le cours : https://nextjs-demo-cic3kqsyz-brahim-lqati.vercel.app/
-- La présentation de la démo https://presentation-nextjs-q6w9rrc8k-brahim-lqati.vercel.app/
+- La présentation de la démo : https://presentation-nextjs-q6w9rrc8k-brahim-lqati.vercel.app/
 
 ## Prérequis
 
@@ -26,15 +24,16 @@ Puis lancez le serveur:
 (Pour les curieux, la commande `dev` provient de
 `nextjs-movies/package.json -> scripts -> dev`)
 
-Vous devriez à présent voir l'URL vous permettant de visualiser l'application s'afficher dans votre terminal.
+Vous devriez à présent voir l'URL vous permettant d'accéder à l'application s'afficher dans votre terminal.
 
 Pour terminer la configuration initiale, créez un fichier `.env` à la racine du projet. Ceci va nous permettre de configurer les variables d'environnement dont nous aurons besoin pour utiliser l'API de TMDB. Copiez-y les lignes suivantes:
 
-`API_KEY = b9c543de689f5cf5638b93f066de05b5
-API_URL = https://api.themoviedb.org/3/movie/`
+`API_KEY = b9c543de689f5cf5638b93f066de05b5`
+
+`API_URL = https://api.themoviedb.org/3/movie`
 
 ## Styles
-Pour ajouter facilement des éléments d'interface qui en jettent à notre application, nous allons utiliser la librairie Ant Design. Ant Design met à notre disposition une multitude de composants pré-stylés :
+Pour ajouter facilement des éléments d'interface qui en jettent à notre application, nous allons utiliser la librairie Ant Design. Ant Design met à notre disposition une multitude de composants pré-stylés.
 
 `npm install antd --save`
 
@@ -86,12 +85,9 @@ Il est temps de créer notre premier composant, MovieCard. Ce composant nous per
 
 Avant tout, créez un dossier `components` à la racine du projet, dans lequel seront rangés les composants.
 
-Une bonne pratique pour garder ses projets organisés est de garder chaque composant avec tous ses fichiers dans un dossier séparé. Créez le dossier `components/moviecard` qui contiendra le composant MovieCard, et créez-y un fichier `index.js`.
+Une bonne pratique pour garder ses projets organisés est de garder chaque composant avec tous ses fichiers (tests, CSS...) dans un dossier séparé. Créez le dossier `components/MovieCard` qui contiendra le composant MovieCard, et créez-y un fichier `MovieCard.js`.
 
-<!-- a bit less useful to us since we're using antd
-we only have to specify the name of the folder in the import -->
-
-Bonne nouvelle, la librairie Ant Design que nous avons installée fournit déjà des composants qui font exactement ce dont on a besoin, dont un composant Card que l'on peut réutiliser. La page https://ant.design/components/card/ indique comment utiliser ce composant son projet. Choisissez l'un des exemples, puis copiez le code en-dessous dans `index.js`.
+Bonne nouvelle, la librairie Ant Design que nous avons installée fournit déjà des composants qui font exactement ce dont on a besoin, dont un composant Card que l'on peut réutiliser. La page https://ant.design/components/card/ indique comment utiliser ce composant son projet. Choisissez l'un des exemples, puis copiez le code en-dessous dans `MovieCard.js`.
 
 Votre composant devrait ressembler à ceci:
 
@@ -123,7 +119,7 @@ export  default  function  MovieCard(){
 La page principale affichera notre catalogue, c'est-à-dire une liste de films qui seront chacun affichés via une instance de notre composant MovieCard. Pour structurer un peu le catalogue, nous allons utiliser l'un des layouts fournis par Ant Design.
 
 Pour l'exemple, nous allons utiliser le layout [grid](https://ant.design/components/grid/), mais vous pouvez encore une fois choisir le layout que vous voulez.
-Intégrez le layout choisi dans `pages/index.js` (vous pouvez supprimer le contenu généré par Next.js lors de la création de l'application) :
+Intégrez le layout choisi dans le composant Home de `pages/index.js` (vous pouvez supprimer le contenu généré par Next.js lors de la création de l'application) :
 
 ```js
 import { Row } from  'antd';
@@ -142,16 +138,16 @@ Par la suite pour l'insérer au sein de notre page on pourra l'invoquer comme ce
 
 ### Récupérer les données
 
-On va maintenant récuperer les données des films dont nous avons besoin pour peupler notre page. Pour cela, nous allons consommer l'API que nous avons précédemment définie dans le fichier `.env`. Pour mieux comprendre l'API, vous pouvez consulter sa [documentation](https://developers.themoviedb.org/3/movies/get-upcoming).
+On va maintenant récuperer les données des films dont nous avons besoin pour peupler notre page. Pour cela, nous allons consommer l'API que nous avons précédemment définie dans le fichier `.env`. Pour mieux comprendre l'API, vous pouvez consulter sa documentation: https://developers.themoviedb.org/3/movies/get-upcoming.
 
-On récupère les données dans une fonction appellée `getStaticProps`, qu'on oublie pas d'exporter aussi, puis on les retourne dans un object contenu dans un champ `props`.
+On récupère les données dans une fonction appellée `getStaticProps`, qu'il faut ajouter à `index.js` et ne pas oublier d'exporter. Une fois les données obtenues, on les retourne dans un object contenu dans un champ `props`, qui sera passé au composant Home.
 
 <details>
-  <summary>SPOILER!</summary>
+  <summary>Solution</summary>
   
 ```js
 export  const getStaticProps = async () => { 
-	const res = await fetch(`${process.env.API_URL}?api_key=${process.env.API_KEY}`); 
+	const res = await fetch(`${process.env.API_URL}/upcoming?api_key=${process.env.API_KEY}`); 
 	const moviesAll = await res.json(); 
 	const movies = moviesAll.results; 
 	return { 
@@ -165,9 +161,9 @@ export  const getStaticProps = async () => {
 
 ## Créer des composants à partir des données
 
-Au sein de notre composant Home, nous allons ensuite itérer sur notre liste de films, et créer un composant MovieCard pour chaque élement de la liste. Il faut lui passer les propriétés suivantes:
+Au sein de notre composant Home, nous allons ensuite itérer sur notre liste de films, et créer un composant MovieCard pour chaque élement de la liste. Lorsque l'on crée un composant MovieCard, on veut également lui passer les propriétés suivantes:
  - `movie`: l'objet récupéré dans la liste, contenant les données du film.
- - `key`: un identifiant unique pour chaque objet de la liste. Il est requis par React pour des raisons de [performances](https://fr.reactjs.org/docs/reconciliation.html#recursing-on-children).
+ - `key`: un identifiant unique pour chaque objet de la liste, comme son ID. Il est requis par React pour des raisons de [performance](https://fr.reactjs.org/docs/reconciliation.html#recursing-on-children).
  
 **Tip:** 
 Pour évaluer du code Javascript a l'interieur du code JSX, on utilise des accolades, par exemple:
@@ -182,10 +178,10 @@ return (
 ```
 
 <details>
-  <summary>SPOILER!</summary>
+  <summary>Solution</summary>
   
 ```js
-export  default  function  Home(movies) {
+export  default  function  Home({movies}) {
 	return (
 		<>
 			<Row  justify="space-around"  align="middle"  gutter={[20, 20]}>
@@ -213,57 +209,68 @@ Pour cela on utilise le composant `Link` de Next.js, qui permet de naviguer entr
 
 `import Link from 'next/link';`
 
-Pour rendre `MovieCard` cliquable, on encapsule notre composant `MovieCard` à l'intérieur d'un composant `Link`.
+Pour rendre `MovieCard` cliquable, on encapsule notre composant `MovieCard` à l'intérieur d'un composant `Link`. Vous pouvez laisser l'adresse de destination vide, puisque nous n'avons pas encore de pages dédiées aux films vers lesquelles rediriger l'utilisateur.
 
 
 **Tip:**
 Pour trouver l'adresse à laquelle récupérer l'image du film, voir cette [documentation](https://developers.themoviedb.org/3/getting-started/images).
  <details>
-  <summary>SPOILER!</summary>
+  <summary>Solution</summary>
   
 ```js
-<Link href={`/movies/${movie.id}`}>
-    <Card
-        style={{ width: 300 }}
-        cover={
-            <img
-                alt="cover movie"
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-            />
-        }
-        actions={[
-            <p>
-                <StarOutlined />
-                {movie.popularity}
-            </p>,
-            <p>{movie.vote_average}</p>,
-        ]}
-    >
-    <Meta
-        title={movie.title}
-    />
-    </Card>
-</Link>
+export default function MovieCard({movie}) {
+    return (
+		<Link href={`/movies/${movie.id}`}>
+			<Card
+				style={{ width: 300 }}
+				cover={
+					<img
+						alt="cover movie"
+						src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+					/>
+				}
+				actions={[
+					<p>
+						{movie.popularity}
+					</p>,
+					<p>{movie.vote_average}</p>,
+				]}
+			>
+			<Meta
+				title={movie.title}
+			/>
+			</Card>
+		</Link>
+	);
+}
 ```
 
 </details>
 
 
 ## Page dédiée pour chaque film
-Il faut maintenant créer une page pour chaque film. Next.js peut nous aider à réaliser cela grâce à une page à nom variable, qui servira de modèle pour construire automatiquement une nouvelle page pour chaque film.
-
-Comme cité dans le cours, Next.JS peut générer les pages HTML à l'avance, lors de la compilation du site (en mode développement, le site est recompilé à chaque modification).
+Il faut maintenant créer une page pour chaque film. Next.js peut nous aider à réaliser cela grâce à une route dynamique, de la forme /movies/[idDuFilm]. Comme cité dans le cours, Next.JS peut générer ces pages HTML directement lors de la compilation du site (en mode développement, le site est recompilé à chaque modification).
 Pour cela, il faudra utiliser :
-- La méthode `getStaticPaths`: pour récupérer les ids des films, et donc tous les paths possibles.
-- La méthode `getStaticProps`: qui va prendre en paramètre l'id pour récupérer plus de details sur le film correspondant, voir la [documentation](https://developers.themoviedb.org/3/movies/get-movie-details) de l'API.
-- un composant: qui va prendre les paramètres passé par `getStaticProps` et les afficher
+- Une page `pages/movies/[id].js`.
+- La méthode `getStaticPaths` pour récupérer les ids des films, et à partir de cela retourner la liste de tous les paths de nos pages à générer.
+- Un composant MoviePage qui permettra d'afficher les informations d'un film donné.
+- La méthode `getStaticProps` qui va prendre en paramètre un id de film, pour récupérer davantage de détails sur le film correspondant et les fournir au composant MoviePage qui les affichera. Voir la [documentation](https://developers.themoviedb.org/3/movies/get-movie-details) de l'API.
 
  <details>
-  <summary>SPOILER!</summary>
+  <summary>Solution</summary>
   
 ```js
+export default function MoviePage( {movie} ) {
+    // A vous de voir comment styler ce composant...
+    return(
+        <div>
+            <h1>{movie.title}</h1>
+        </div>
+    )
+}
+
 export const getStaticPaths = async () => {
-    const res = await fetch(`${process.env.API_URL}upcoming?api_key=${process.env.API_KEY}`)
+    const res = await fetch(`${process.env.API_URL}/upcoming?api_key=${process.env.API_KEY}`)
     const moviesAll = await res.json();
     const movies = moviesAll.results;
 
@@ -273,13 +280,11 @@ export const getStaticPaths = async () => {
         paths,
         fallback: false
     };
-
 }
 
 export const getStaticProps = async (context) => {
     const id = context.params.id;
-    console.log(id);
-    const res = await fetch(`${process.env.API_URL}${id}?api_key=${process.env.API_KEY}`)
+    const res = await fetch(`${process.env.API_URL}/${id}?api_key=${process.env.API_KEY}`)
     const movie = await res.json();
 
     return {
@@ -287,15 +292,6 @@ export const getStaticProps = async (context) => {
             movie,
         },
     }
-}
-
-export default function MovieCard( {movie} ) {
-    // A vous de voir comment styler ce composant...
-    return(
-        <div>
-            <h1>{movie.id}</h1>
-        </div>
-    )
 }
 ```
 
